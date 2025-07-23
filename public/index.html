@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Org-Wise Meeting Transcript Manager</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-comments"></i>
+            <h1>Meeting Manager</h1>
+          </div>
+          <div class="org-selector">
+            <label for="orgSelect">Organization:</label>
+            <select id="orgSelect">
+              <option value="1">TechCorp Solutions</option>
+              <option value="2">InnovateNow Inc</option>
+            </select>
+            <button id="switchOrgBtn" class="btn btn-secondary">Switch</button>
+          </div>
+          <div class="user-info">
+            <span id="currentUser">Loading...</span>
+            <button id="exportAllBtn" class="btn btn-primary">
+              <i class="fas fa-download"></i> Export All
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <!-- Dashboard Stats -->
+        <section class="dashboard-stats">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="stat-content">
+              <h3 id="totalMeetings">0</h3>
+              <p>Total Meetings</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+              <h3 id="parsedMeetings">0</h3>
+              <p>Parsed Meetings</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-content">
+              <h3 id="totalUsers">0</h3>
+              <p>Team Members</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-tasks"></i>
+            </div>
+            <div class="stat-content">
+              <h3 id="totalActions">0</h3>
+              <p>Action Items</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Meetings Section -->
+        <section class="meetings-section">
+          <div class="section-header">
+            <h2><i class="fas fa-list"></i> Meetings Dashboard</h2>
+            <div class="section-actions">
+              <button id="refreshBtn" class="btn btn-secondary">
+                <i class="fas fa-sync-alt"></i> Refresh
+              </button>
+              <button id="addMeetingBtn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Meeting
+              </button>
+            </div>
+          </div>
+
+          <!-- Meetings List -->
+          <div class="meetings-grid" id="meetingsGrid">
+            <!-- Meetings will be loaded here -->
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Meeting Detail Modal -->
+    <div id="meetingModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modalTitle">Meeting Details</h2>
+          <span class="close" id="closeModal">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="modal-tabs">
+            <button class="tab-btn active" data-tab="transcript">
+              Raw Transcript
+            </button>
+            <button class="tab-btn" data-tab="parsed">Parsed Data</button>
+          </div>
+
+          <div class="tab-content">
+            <!-- Raw Transcript Tab -->
+            <div id="transcriptTab" class="tab-pane active">
+              <div class="transcript-header">
+                <h3>Raw Meeting Transcript</h3>
+                <div class="transcript-actions">
+                  <button id="parseBtn" class="btn btn-primary">
+                    <i class="fas fa-cogs"></i> Parse Transcript
+                  </button>
+                  <button
+                    id="reparseBtn"
+                    class="btn btn-secondary"
+                    style="display: none"
+                  >
+                    <i class="fas fa-redo"></i> Re-parse
+                  </button>
+                </div>
+              </div>
+              <div class="transcript-content">
+                <pre id="transcriptText"></pre>
+              </div>
+            </div>
+
+            <!-- Parsed Data Tab -->
+            <div id="parsedTab" class="tab-pane">
+              <div class="parsed-header">
+                <h3>Extracted Data</h3>
+                <div class="parsed-actions">
+                  <button id="exportMeetingBtn" class="btn btn-primary">
+                    <i class="fas fa-file-excel"></i> Export Excel
+                  </button>
+                </div>
+              </div>
+              <div class="parsed-content" id="parsedContent">
+                <p class="no-data">
+                  No parsed data available. Click "Parse Transcript" to extract
+                  structured information.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Meeting Modal -->
+    <div id="addMeetingModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add New Meeting</h2>
+          <span class="close" id="closeAddModal">&times;</span>
+        </div>
+        <div class="modal-body">
+          <form id="addMeetingForm">
+            <div class="form-group">
+              <label for="meetingTitle">Meeting Title *</label>
+              <input type="text" id="meetingTitle" required />
+            </div>
+            <div class="form-group">
+              <label for="meetingDate">Meeting Date</label>
+              <input type="datetime-local" id="meetingDate" />
+            </div>
+            <div class="form-group">
+              <label for="meetingTranscript">Meeting Transcript *</label>
+              <textarea
+                id="meetingTranscript"
+                rows="10"
+                placeholder="Paste your meeting transcript here..."
+                required
+              ></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" id="cancelAddBtn" class="btn btn-secondary">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">Add Meeting</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
