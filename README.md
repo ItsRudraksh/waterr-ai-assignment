@@ -23,8 +23,9 @@ Follow these instructions to get a copy of the project up and running on your lo
 ### Installation
 
 1.  **Clone the repository:**
+
     ```bash
-    git clone <your-repository-url>
+    git clone https://github.com/ItsRudraksh/waterr-ai-assignment.git
     cd assignment
     ```
 
@@ -37,6 +38,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 1.  **Create a `.env` file:**
     Create a new file named `.env` in the root of the project by copying the example file.
+
     ```bash
     cp .env.example .env
     ```
@@ -54,12 +56,12 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 ### Running the Application
 
--   **Start the server:**
-    ```bash
-    npm start
-    ```
--   The server will be running at `http://localhost:5000`.
--   You can access the web interface by navigating to this URL in your browser.
+- **Start the server:**
+  ```bash
+  npm start
+  ```
+- The server will be running at `http://localhost:5000`.
+- You can access the web interface by navigating to this URL in your browser.
 
 ## API Usage
 
@@ -67,8 +69,8 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 The application uses a mock authentication system based on the `x-org-id` request header. This header is used to simulate requests from different organizations.
 
--   **`x-org-id: 1`**: Simulates a user from "TechCorp Solutions" (User ID: 1).
--   **`x-org-id: 2`**: Simulates a user from "InnovateNow Inc" (User ID: 3).
+- **`x-org-id: 1`**: Simulates a user from "TechCorp Solutions" (User ID: 1).
+- **`x-org-id: 2`**: Simulates a user from "InnovateNow Inc" (User ID: 3).
 
 If no header is provided, the API defaults to `x-org-id: 1`.
 
@@ -78,23 +80,23 @@ All endpoints are prefixed with `/api`.
 
 #### Authentication (`/auth`)
 
--   `POST /login`: Simulates user login.
--   `GET /me`: Retrieves the current user's profile based on the `x-org-id` header.
+- `POST /login`: Simulates user login.
+- `GET /me`: Retrieves the current user's profile based on the `x-org-id` header.
 
 #### Organizations (`/organizations`)
 
--   `GET /`: Retrieves a list of all organizations.
--   `GET /:id`: Retrieves details for a specific organization.
+- `GET /`: Retrieves a list of all organizations.
+- `GET /:id`: Retrieves details for a specific organization.
 
 #### Meetings (`/meetings`)
 
--   `GET /`: Retrieves all meetings for the current organization.
--   `POST /`: Adds a new meeting.
--   `GET /:id`: Retrieves details for a specific meeting.
--   `POST /:id/parse`: Parses the transcript for a specific meeting.
--   `POST /:id/reparse`: Re-parses an already processed transcript.
--   `GET /:id/export/excel`: Exports a single meeting's parsed data to an Excel file.
--   `GET /export/excel`: Exports all parsed meetings for the organization to an Excel file.
+- `GET /`: Retrieves all meetings for the current organization.
+- `POST /`: Adds a new meeting.
+- `GET /:id`: Retrieves details for a specific meeting.
+- `POST /:id/parse`: Parses the transcript for a specific meeting.
+- `POST /:id/reparse`: Re-parses an already processed transcript.
+- `GET /:id/export/excel`: Exports a single meeting's parsed data to an Excel file.
+- `GET /export/excel`: Exports all parsed meetings for the organization to an Excel file.
 
 ## High-Level Architecture
 
@@ -193,3 +195,4 @@ sequenceDiagram
 ├── index.js              # Main application entry point
 ├── package.json
 └── README.md
+```
